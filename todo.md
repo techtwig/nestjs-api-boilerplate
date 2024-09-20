@@ -1,0 +1,2 @@
+- [ ] Setup configuration service
+- [ ] Setup Logging service
