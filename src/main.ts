@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { WinstonModule } from 'nest-winston';
 import winstonLogger from './core/libs/winston/winston-logger';
+import { AllExceptionFilter } from './core/filters/all-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -14,6 +15,8 @@ async function bootstrap() {
   });
 
   const configService: ConfigService = app.get(ConfigService);
+
+  app.useGlobalFilters(new AllExceptionFilter());
 
   await app.listen(configService.get<number>(ConfigKey.PORT));
 

@@ -1,2 +1,3 @@
-- [ ] Setup configuration service
-- [ ] Setup Logging service
+- [x] Setup configuration service
+- [x] Setup Logging service
+- [x] Setup Global Exception Filter
