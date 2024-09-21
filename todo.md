@@ -1,3 +1,10 @@
 - [x] Setup configuration service
 - [x] Setup Logging service
 - [x] Setup Global Exception Filter
+- [x] Setup class validator
+- [ ] Setup swagger docs
+- [ ] Setup ORM and DB connection
+- [ ] Setup db seeding
+- [ ] Setup microservice using
+- [ ] Setup documentation Compodoc
+- [ ] Create an example for mail sending
