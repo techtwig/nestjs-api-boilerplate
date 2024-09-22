@@ -2,7 +2,7 @@
 - [x] Setup Logging service
 - [x] Setup Global Exception Filter
 - [x] Setup class validator
-- [ ] Setup swagger docs
+- [x] Setup swagger docs
 - [ ] Setup ORM and DB connection
 - [ ] Setup db seeding
 - [ ] Setup microservice using
