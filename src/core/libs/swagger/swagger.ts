@@ -5,6 +5,7 @@ import {
   SwaggerModule,
 } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import * as process from 'node:process';
 
 const swaggerCustomCss = `
 .swagger-ui .model-box-control:focus, .swagger-ui .models-control:focus, .swagger-ui .opblock-summary-control:focus {
@@ -17,7 +18,7 @@ export const swaggerFactory = async (app: NestExpressApplication) => {
     .setTitle('Nest.js API Boilerplate')
     .setDescription('Nest.js API Boilerplate swagger openapi')
     .setVersion('v1.0.0')
-    .addServer('http://localhost:4000')
+    .addServer(`http://localhost:${process.env['PORT']}`)
     .addBearerAuth(undefined, 'Authorization')
     .build();
 

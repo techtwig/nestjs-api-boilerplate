@@ -8,6 +8,7 @@ import winstonLogger from './core/libs/winston/winston-logger';
 import { AllExceptionFilter } from './core/filters/all-exception.filter';
 import { validationPipeFactory } from './core/config/validation/config';
 import { swaggerFactory } from './core/libs/swagger/swagger';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -15,10 +16,11 @@ async function bootstrap() {
       instance: winstonLogger,
     }),
   });
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   app.useGlobalPipes(validationPipeFactory());
   app.useGlobalFilters(new AllExceptionFilter());
-  swaggerFactory(app).catch(console.log);
+  swaggerFactory(app).catch(console.error);
 
   const configService: ConfigService = app.get(ConfigService);
 

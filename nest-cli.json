@@ -4,5 +4,15 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true
+  },
+  "seeders": {
+    "type": "application",
+    "root": "libs/seeders",
+    "entryFile": "main",
+    "sourceRoot": "libs/seeders/src",
+    "compilerOptions": {
+      "webpack": false,
+      "tsConfigPath": "libs/seeders/tsconfig.app.json"
+    }
   }
 }

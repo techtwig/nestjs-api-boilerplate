@@ -3,8 +3,8 @@
 - [x] Setup Global Exception Filter
 - [x] Setup class validator
 - [x] Setup swagger docs
-- [ ] Setup ORM and DB connection
-- [ ] Setup db seeding
+- [x] Setup ORM and DB connection
+- [x] Setup db seeding
 - [ ] Setup microservice using
 - [ ] Setup documentation Compodoc
 - [ ] Create an example for mail sending
