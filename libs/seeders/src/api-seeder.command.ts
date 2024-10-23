@@ -1,7 +1,11 @@
-import { Command, CommandRunner } from 'nest-commander';
+import { Command, CommandRunner, Option } from 'nest-commander';
 import { DataSource } from 'typeorm';
 import * as path from 'path';
 import * as fs from 'fs';
+
+interface BasicCommandOptions {
+  fresh?: boolean;
+}
 
 @Command({ name: 'seed', description: 'A parameter parse' })
 export class ApiSeederCommand extends CommandRunner {
@@ -9,7 +13,10 @@ export class ApiSeederCommand extends CommandRunner {
     super();
   }
 
-  async run(passedParam: string[], options?: Record<string, never>): Promise<void> {
+  async run(
+    passedParam: string[],
+    options?: BasicCommandOptions,
+  ): Promise<void> {
     const task = new Promise((resolve, reject) => {
       const docDir = path.join(__dirname, 'data');
 
@@ -26,7 +33,7 @@ export class ApiSeederCommand extends CommandRunner {
               const tableName = file.replace('.js', '');
 
               // Insert the data into the corresponding PostgreSQL table
-              await this.seedData(tableName, docs);
+              await this.seedData(tableName, docs, options);
               console.log(`Seeded data for table: ${tableName}`);
             }
           } catch (e) {
@@ -45,24 +52,40 @@ export class ApiSeederCommand extends CommandRunner {
     }
   }
 
+  @Option({
+    flags: '-f, --fresh [fresh]',
+    description: 'A fresh seed',
+  })
+  parseFresh(val: string): boolean {
+    return !!val;
+  }
+
   /**
-   * Method to seed data into PostgreSQL for a specific table.
    * @param tableName - The table to seed.
    * @param data - The array of data to insert.
+   * @param options
    */
-  private async seedData(tableName: string, data: any[]): Promise<void> {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-
+  private async seedData(
+    tableName: string,
+    data: any[],
+    options?: BasicCommandOptions,
+  ): Promise<void> {
     try {
-      // Insert data into the table
-      for (const record of data) {
-        await queryRunner.manager.insert(tableName, record);
+      if (options.fresh) {
+        await this.dataSource
+          .createQueryRunner()
+          .query(`TRUNCATE TABLE ${tableName}`);
       }
+      await this.dataSource
+        .createQueryBuilder()
+        .insert()
+        .into(tableName)
+        .values(data)
+        .orIgnore()
+        .execute();
     } catch (error) {
       console.error(`Error seeding table ${tableName}:`, error);
     } finally {
-      await queryRunner.release();
     }
   }
 }
