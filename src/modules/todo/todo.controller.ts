@@ -23,7 +23,6 @@ export class TodoController {
 
   @Get()
   findAll() {
-    throw new HttpException('Hello world', 300);
     return this.todoService.findAll();
   }
 
